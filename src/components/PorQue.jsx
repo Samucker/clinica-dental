@@ -1,3 +1,5 @@
+import useAnimacion from "../hooks/useAnimacion"
+
 const razones = [
   {
     icono: "📍",
@@ -22,11 +24,15 @@ const razones = [
 ]
 
 export default function PorQue() {
+  const [refHeader, visibleHeader] = useAnimacion()
+
   return (
-    <section id="nosotros" className="py-24 bg-blue-700">
+    <section id="nosotros" className="py-24 bg-blue-700 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
 
-        <div className="text-center mb-16">
+        <div ref={refHeader} className={`text-center mb-16 transition-all duration-700 ${
+          visibleHeader ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        }`}>
           <span className="text-blue-200 font-semibold text-sm uppercase tracking-widest">
             Nuestra diferencia
           </span>
@@ -39,13 +45,23 @@ export default function PorQue() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {razones.map((r, i) => (
-            <div key={i} className="bg-white/10 backdrop-blur rounded-2xl p-6 text-white hover:bg-white/20 transition-all duration-300">
-              <div className="text-4xl mb-4">{r.icono}</div>
-              <h3 className="text-lg font-bold mb-2">{r.titulo}</h3>
-              <p className="text-blue-100 text-sm leading-relaxed">{r.descripcion}</p>
-            </div>
-          ))}
+          {razones.map((r, i) => {
+            const [ref, visible] = useAnimacion()
+            return (
+              <div
+                ref={ref}
+                key={i}
+                style={{ transitionDelay: `${i * 120}ms` }}
+                className={`bg-white/10 backdrop-blur rounded-2xl p-6 text-white hover:bg-white/20 transition-all duration-500 ${
+                  visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                }`}
+              >
+                <div className="text-4xl mb-4">{r.icono}</div>
+                <h3 className="text-lg font-bold mb-2">{r.titulo}</h3>
+                <p className="text-blue-100 text-sm leading-relaxed">{r.descripcion}</p>
+              </div>
+            )
+          })}
         </div>
 
       </div>

@@ -1,10 +1,17 @@
+import useAnimacion from "../hooks/useAnimacion"
+
 export default function Contacto() {
+  const [refIzq, visibleIzq] = useAnimacion()
+  const [refDer, visibleDer] = useAnimacion()
+
   return (
-    <section id="contacto" className="py-24 bg-white">
+    <section id="contacto" className="py-24 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
-        {/* Texto izquierda */}
-        <div className="flex flex-col gap-6">
+        {/* Texto izquierda — entra desde la izquierda */}
+        <div ref={refIzq} className={`flex flex-col gap-6 transition-all duration-700 ${
+          visibleIzq ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
+        }`}>
           <span className="text-blue-600 font-semibold text-sm uppercase tracking-widest">
             Estamos para ti
           </span>
@@ -14,34 +21,27 @@ export default function Contacto() {
           <p className="text-gray-500 leading-relaxed">
             Escríbenos por WhatsApp y te respondemos en minutos. También puedes llamarnos o visitarnos directamente en nuestro consultorio en Caracas.
           </p>
-
           <div className="flex flex-col gap-4 mt-2">
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-100 rounded-full p-3 text-xl">📱</div>
-              <div>
-                <p className="font-bold text-gray-900">WhatsApp</p>
-                <p className="text-gray-500 text-sm">+58 412-123-4567</p>
+            {[
+              { icono: "📱", titulo: "WhatsApp", detalle: "+58 412-123-4567" },
+              { icono: "📍", titulo: "Dirección", detalle: "Av. Principal, Chacaíto, Caracas" },
+              { icono: "🕐", titulo: "Horario", detalle: "Lunes a Viernes 8am – 6pm · Sábados 8am – 1pm" }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className="bg-blue-100 rounded-full p-3 text-xl">{item.icono}</div>
+                <div>
+                  <p className="font-bold text-gray-900">{item.titulo}</p>
+                  <p className="text-gray-500 text-sm">{item.detalle}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-100 rounded-full p-3 text-xl">📍</div>
-              <div>
-                <p className="font-bold text-gray-900">Dirección</p>
-                <p className="text-gray-500 text-sm">Av. Principal, Chacaíto, Caracas</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-100 rounded-full p-3 text-xl">🕐</div>
-              <div>
-                <p className="font-bold text-gray-900">Horario</p>
-                <p className="text-gray-500 text-sm">Lunes a Viernes 8am – 6pm · Sábados 8am – 1pm</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Card derecha */}
-        <div className="bg-blue-50 rounded-3xl p-10 flex flex-col gap-6 items-center text-center">
+        {/* Card derecha — entra desde la derecha */}
+        <div ref={refDer} className={`bg-blue-50 rounded-3xl p-10 flex flex-col gap-6 items-center text-center transition-all duration-700 delay-200 ${
+          visibleDer ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
+        }`}>
           <span className="text-6xl">💬</span>
           <h3 className="text-2xl font-extrabold text-gray-900">
             ¿Listo para tu primera cita?
